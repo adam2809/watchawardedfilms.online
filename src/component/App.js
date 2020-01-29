@@ -12,11 +12,11 @@ export default function App() {
     return (
         <Router>
             <Switch>
+                <Route path="/festival/:festId">
+                  <FestivalAwards />
+                </Route>
               <Route path="/">
                 <Festivals />
-              </Route>
-              <Route path="/festival/:id">
-                <FestivalAwards />
               </Route>
             </Switch>
         </Router>
