@@ -10,7 +10,7 @@ class FestivalAwards extends React.Component {
 	}
 
 	componentDidMount(){
-		fetch("http://localhost:8000/api/festival/"+this.props.match.params.festId)
+		fetch(process.env.REACT_APP_API_URL+"festival/"+this.props.match.params.festId)
 		.then(res => res.json())
 		.then(res => {
 			this.setState({
@@ -33,7 +33,7 @@ class FestivalAwards extends React.Component {
 				{this.state.isLoading && <h2>Loading...</h2>}
 				{this.state.errorOcurred && <h2>Could not retrieve films list</h2>}
 
-				{this.state.films.map((f,i) => <p key={i}>{i}: {f.name}		{f.year}	{f.award}</p>)}
+				{this.state.films.map((f,i) => <p key={i}>{i}: {f.name} | {f.year} | {f.award}</p>)}
 			</div>
 		)
 	}

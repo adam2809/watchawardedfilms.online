@@ -9,7 +9,7 @@ export default class Festivals extends React.Component {
 	}
 
 	componentDidMount(){
-		fetch("http://localhost:8000/api/festivals")
+		fetch(process.env.REACT_APP_API_URL+"festivals")
 		.then(res => res.json())
 		.then(res => {
 			this.setState({
