@@ -9,16 +9,16 @@ import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
 
 export default function App() {
-  return (
-    <Router>
-        <Switch>
-          <Route path="/">
-            <Festivals />
-          </Route>
-          <Route path="/festival/:id">
-            <FestivalAwards />
-          </Route>
-        </Switch>
-    </Router>
-  );
+    return (
+        <Router>
+            <Switch>
+              <Route path="/">
+                <Festivals />
+              </Route>
+              <Route path="/festival/:id">
+                <FestivalAwards />
+              </Route>
+            </Switch>
+        </Router>
+    );
 }
