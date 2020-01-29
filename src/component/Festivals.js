@@ -18,7 +18,6 @@ export default class Festivals extends React.Component {
 			})
 		})
 		.catch(err => {
-			console.log('errrrrrrrrrrrrrrr')
 			this.setState({
 				error: true,
 				isLoading: false
@@ -33,7 +32,7 @@ export default class Festivals extends React.Component {
 				{this.state.isLoading && <h2>Loading...</h2>}
 				{this.state.errorOcurred && <h2>Could not retrieve festival list</h2>}
 
-				{this.state.festivals.map((fest,index) => <p key={index}>{index}: {fest}</p>)}
+				{this.state.festivals.map((f,i) => <p key={i}>{i}: {f}</p>)}
 			</div>
 		)
 	}
