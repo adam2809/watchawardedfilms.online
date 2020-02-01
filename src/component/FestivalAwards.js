@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 
 class FestivalAwards extends React.Component {
+	fId
+
 	constructor(props){
 		super()
 		this.state = {films:[],
                       isLoading:true,
 					  errorOcurred:false}
+	  	this.fId = props.match.params.festId
 	}
 
 	componentDidMount(){
-		fetch(process.env.REACT_APP_API_URL+"festival/"+this.props.match.params.festId)
+		fetch(process.env.REACT_APP_API_URL+"festival/"+this.fId)
 		.then(res => res.json())
 		.then(res => {
 			this.setState({
@@ -29,7 +32,7 @@ class FestivalAwards extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>This is the list of all awards for {this.props.festName}</h1>
+				<h1>This is the list of all awards for </h1>
 				{this.state.isLoading && <h2>Loading...</h2>}
 				{this.state.errorOcurred && <h2>Could not retrieve films list</h2>}
 
