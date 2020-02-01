@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link } from "react-router-dom";
 
 export default class Festivals extends React.Component {
 	constructor(props){
@@ -33,7 +34,9 @@ export default class Festivals extends React.Component {
 				{this.state.isLoading && <h2>Loading...</h2>}
 				{this.state.errorOcurred && <h2>Could not retrieve festival list</h2>}
 
-				{this.state.festivals.map((f,i) => <p key={i}>{i}: {f}</p>)}
+				{this.state.festivals.map((f,i) => {
+					return <Link to={"/festival/"+i.toString()} key={i}> {f}<br/> </Link>
+				})}
 			</div>
 		)
 	}
