@@ -9,14 +9,19 @@ import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
 
 export default class App extends React.Component{
+    festivals
+    setFestivals(festivals){
+        this.festivals = festivals
+    }
+
     render(){
         return (
             <Router>
                 <Switch>
-                    <Route path="/festival/:festId">
+                    <Route path="/festival/:festId" festivals={this.festivals}>
                       <FestivalAwards />
                     </Route>
-                  <Route path="/">
+                  <Route path="/" setFestivals={this.setFestivals}>
                     <Festivals />
                   </Route>
                 </Switch>

@@ -16,6 +16,7 @@ export default class Festivals extends React.Component {
 				festivals: res.festivals,
 				isLoading: false,
 			})
+			this.props.setFestivals(res.festivals)
 		})
 		.catch(err => {
 			this.setState({

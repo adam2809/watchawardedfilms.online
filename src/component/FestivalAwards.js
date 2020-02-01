@@ -32,7 +32,7 @@ class FestivalAwards extends React.Component {
 	render(){
 		return(
 			<div>
-				<h1>This is the list of all awards for </h1>
+				<h1>This is the list of all awards for {this.props.festivals[this.fId]}</h1>
 				{this.state.isLoading && <h2>Loading...</h2>}
 				{this.state.errorOcurred && <h2>Could not retrieve films list</h2>}
 
