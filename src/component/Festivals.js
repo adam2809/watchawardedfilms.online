@@ -19,12 +19,12 @@ export default class Festivals extends React.Component {
 				isLoading: false,
 			})
 		})
-		// .catch(err => {
-		// 	this.setState({
-		// 		error: true,
-		// 		isLoading: false
-		// 	})
-		// })
+		.catch(err => {
+			this.setState({
+				error: true,
+				isLoading: false
+			})
+		})
 	}
 
 	render(){

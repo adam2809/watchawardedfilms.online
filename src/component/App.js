@@ -7,6 +7,7 @@ import {
 
 import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
+import WatchModal from './WatchModal'
 
 let festivals = []
 
@@ -23,12 +24,15 @@ class App extends React.Component{
         return (
             <Router>
                 <Switch>
+                    <Route path="/test">
+                      <WatchModal/>
+                    </Route>
                     <Route path="/festival/:festId">
                       <FestivalAwards getFestivals={this.getFestivals}/>
                     </Route>
-                  <Route path="/">
-                    <Festivals setFestivals={this.setFestivals}/>
-                  </Route>
+                    <Route path="/">
+                        <Festivals setFestivals={this.setFestivals}/>
+                    </Route>
                 </Switch>
             </Router>
         );
