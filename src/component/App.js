@@ -8,24 +8,31 @@ import {
 import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
 
-export default class App extends React.Component{
-    festivals
-    setFestivals(festivals){
-        this.festivals = festivals
+let festivals = []
+
+class App extends React.Component{
+    setFestivals(f){
+        festivals = f
+    }
+
+    getFestivals(){
+        return festivals
     }
 
     render(){
         return (
             <Router>
                 <Switch>
-                    <Route path="/festival/:festId" festivals={this.festivals}>
-                      <FestivalAwards />
+                    <Route path="/festival/:festId">
+                      <FestivalAwards getFestivals={this.getFestivals}/>
                     </Route>
-                  <Route path="/" setFestivals={this.setFestivals}>
-                    <Festivals />
+                  <Route path="/">
+                    <Festivals setFestivals={this.setFestivals}/>
                   </Route>
                 </Switch>
             </Router>
         );
     }
 }
+
+export default App

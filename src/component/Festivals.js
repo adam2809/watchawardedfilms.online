@@ -13,18 +13,18 @@ export default class Festivals extends React.Component {
 		fetch(process.env.REACT_APP_API_URL+"festivals")
 		.then(res => res.json())
 		.then(res => {
+			this.props.setFestivals(res.festivals)
 			this.setState({
 				festivals: res.festivals,
 				isLoading: false,
 			})
-			this.props.setFestivals(res.festivals)
 		})
-		.catch(err => {
-			this.setState({
-				error: true,
-				isLoading: false
-			})
-		})
+		// .catch(err => {
+		// 	this.setState({
+		// 		error: true,
+		// 		isLoading: false
+		// 	})
+		// })
 	}
 
 	render(){
@@ -35,7 +35,7 @@ export default class Festivals extends React.Component {
 				{this.state.errorOcurred && <h2>Could not retrieve festival list</h2>}
 
 				{this.state.festivals.map((f,i) => {
-					return <Link to={"/festival/"+i.toString()} key={i}> {f}<br/> </Link>
+					return <Link to={"/festival/"+(i+1).toString()} key={i}> {f}<br/> </Link>
 				})}
 			</div>
 		)
