@@ -1,8 +1,10 @@
 import React from 'react';
 
-import JustWatch from 'justwatch-api' 
-
 export default class WatchModal extends React.Component {
+
+
+
+
 	constructor(props){
 		super(props)
 	}
@@ -11,5 +13,6 @@ export default class WatchModal extends React.Component {
 	}
 
 	render(){
+		return <h1>{this.response.total_results}</h1>
 	}
 }
