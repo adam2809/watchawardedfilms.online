@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import { Text } from 'rebass'
 
 export default class Festivals extends React.Component {
 	constructor(props){
