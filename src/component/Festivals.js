@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
+import {
+	List,
+	ListItem,
+	ListItemText,
+	Typography,
+	Box,
+	CircularProgress
+} from '@material-ui/core'
 
 export default class Festivals extends React.Component {
 	constructor(props){
@@ -25,7 +30,7 @@ export default class Festivals extends React.Component {
 		})
 		.catch(err => {
 			this.setState({
-				error: true,
+				errorOcurred: true,
 				isLoading: false
 			})
 		})
@@ -33,25 +38,28 @@ export default class Festivals extends React.Component {
 
 	render(){
 		return(
-			<div>
-				<h1>This is the list of all available festivals</h1>
-				{this.state.isLoading && <h2>Loading...</h2>}
-				{this.state.errorOcurred && <h2>Could not retrieve festival list</h2>}
-				<List>
-					{this.state.festivals.map((f,i) => {
-						return (
-							<ListItem
-								button
-								key={i}
-								component={Link}
-								to={"/festival/"+(i+1).toString()}
-							>
-								<ListItemText primary={f}/>
-							</ListItem>
-						)
-						// return <Link to={"/festival/"+(i+1).toString()} key={i}> {f}<br/> </Link>
-					})}
-				</List>
+			<div align='center'>
+				<Typography variant="h2">
+					Available festivals:
+				</Typography>
+				{this.state.isLoading && <CircularProgress color='primary'></CircularProgress>}
+				{this.state.errorOcurred && <Typography variant='h3'>Could not retrieve festival list</Typography>}
+				<Box width={300}>
+					<List>
+						{this.state.festivals.map((f,i) => {
+							return (
+								<ListItem
+									button
+									key={i}
+									component={Link}
+									to={"/festival/"+(i+1).toString()}
+								>
+									<ListItemText primary={f} align='center'/>
+								</ListItem>
+							)
+						})}
+					</List>
+				</Box>
 			</div>
 		)
 	}
