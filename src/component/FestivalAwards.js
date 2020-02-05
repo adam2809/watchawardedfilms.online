@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 class FestivalAwards extends React.Component {
 	fId
@@ -69,11 +71,15 @@ class FestivalAwards extends React.Component {
 						</TableContainer>
 					}
 				</Box>
-
-
-				{this.state.errorOcurred && <h2>Could not retrieve films list</h2>}
-
-				{this.state.films.map((f,i) => <p key={i}>{i}: {f.name} | {f.year} | {f.award}</p>)}
+				<Snackbar
+					open={this.state.errorOcurred}
+					onClose={() => this.setState({errorOcurred:false})}>
+					<Alert
+						onClose={() => this.setState({errorOcurred:false})}
+						severity='error'>
+						Could not retrieve films list
+					</Alert>
+				</Snackbar>
 			</div>
 		)
 	}

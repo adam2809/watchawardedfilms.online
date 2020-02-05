@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 import {
 	List,
 	ListItem,
@@ -45,7 +48,6 @@ export default class Festivals extends React.Component {
 					Available festivals:
 				</Typography>
 				{this.state.isLoading && <CircularProgress color='primary'></CircularProgress>}
-				{this.state.errorOcurred && <Typography variant='h3'>Could not retrieve festival list</Typography>}
 				<Box width={300}>
 					<Paper>
 						<List>
@@ -67,6 +69,15 @@ export default class Festivals extends React.Component {
 						</List>
 					</Paper>
 				</Box>
+				<Snackbar
+					open={this.state.errorOcurred}
+					onClose={() => this.setState({errorOcurred:false})}>
+					<Alert
+						onClose={() => this.setState({errorOcurred:false})}
+						severity='error'>
+						Could not retrieve festivals list
+					</Alert>
+				</Snackbar>
 			</div>
 		)
 	}
