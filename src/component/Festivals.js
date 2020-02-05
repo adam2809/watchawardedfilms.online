@@ -7,7 +7,9 @@ import {
 	ListItemText,
 	Typography,
 	Box,
-	CircularProgress
+	CircularProgress,
+	Paper,
+	Divider
 } from '@material-ui/core'
 
 export default class Festivals extends React.Component {
@@ -45,20 +47,25 @@ export default class Festivals extends React.Component {
 				{this.state.isLoading && <CircularProgress color='primary'></CircularProgress>}
 				{this.state.errorOcurred && <Typography variant='h3'>Could not retrieve festival list</Typography>}
 				<Box width={300}>
-					<List>
-						{this.state.festivals.map((f,i) => {
-							return (
-								<ListItem
-									button
-									key={i}
-									component={Link}
-									to={"/festival/"+(i+1).toString()}
-								>
-									<ListItemText primary={f} align='center'/>
-								</ListItem>
-							)
-						})}
-					</List>
+					<Paper>
+						<List>
+							{this.state.festivals.map((f,i) => {
+								return (
+									<>
+										<ListItem
+											button
+											key={i}
+											component={Link}
+											to={"/festival/"+(i+1).toString()}
+										>
+											<ListItemText primary={f} align='center'/>
+										</ListItem>
+										{(i != this.state.festivals.length - 1) && <Divider/>}
+									</>
+								)
+							})}
+						</List>
+					</Paper>
 				</Box>
 			</div>
 		)
