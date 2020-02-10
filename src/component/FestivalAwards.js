@@ -13,6 +13,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
+import MaterialTable from 'material-table'
+
 
 class FestivalAwards extends React.Component {
 	fId
@@ -20,26 +22,9 @@ class FestivalAwards extends React.Component {
 	constructor(props){
 		super()
 		this.state = {films:[],
-                      isLoading:true,
+                      showDrawer:false,
 					  errorOcurred:false}
 	  	this.fId = props.match.params.festId
-	}
-
-	componentDidMount(){
-		fetch(process.env.REACT_APP_API_URL+"festival/"+this.fId)
-		.then(res => res.json())
-		.then(res => {
-			this.setState({
-				films: res.films,
-				isLoading: false,
-			})
-		})
-		.catch(err => {
-			this.setState({
-				errorOcurred: true,
-				isLoading: false
-			})
-		})
 	}
 
 	render(){
@@ -47,30 +32,40 @@ class FestivalAwards extends React.Component {
 			<div align='center'>
 				<h1>This is the list of all awards for {this.props.getFestivals()[this.fId-1]}</h1>
 				<Box width={600}>
-				{this.state.isLoading ? <CircularProgress color='primary' /> :
-						<TableContainer component={Paper}>
-							<Table aria-label={"Awards for "+this.props.getFestivals()[this.fId-1]}>
-								<TableHead>
-									<TableRow>
-										<TableCell><b>Title</b></TableCell>
-										<TableCell><b>Award</b></TableCell>
-										<TableCell><b>Year</b></TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{
-										this.state.films.sort((a,b) => (a.year < b.year) ? 1 : -1).map((f,i) => (
-											<TableRow key={i}>
-												<TableCell>{f.name}</TableCell>
-												<TableCell>{f.award}</TableCell>
-												<TableCell>{f.year}</TableCell>
-											</TableRow>
-										))
-									}
-								</TableBody>
-							</Table>
-						</TableContainer>
-					}
+					<MaterialTable
+						columns={[
+							{title:'Title',field:'name'},
+							{title:'Award',field:'award'},
+							{title:'Year',field:'year'},
+						]}
+						data={query => new Promise((resolve,reject) => {
+							fetch(process.env.REACT_APP_API_URL+"festival/"+this.fId)
+							.then(res => res.json())
+							.then(res => {
+								resolve({
+									data: res.films
+								})
+							})
+							.catch(err => {
+								this.setState({
+									errorOcurred: true
+								})
+							})
+						})}
+						actions={[
+							{
+							  icon: 'movie',
+							  tooltip: 'Show watch offers',
+							  onClick: (event, rowData) => {
+								  console.log(rowData)
+							  }
+							}
+						]}
+						options={{paging:false,showTitle:false}}
+						localization={{
+							header: {actions:''}
+						}}
+					/>
 				</Box>
 				<Snackbar
 					open={this.state.errorOcurred}
