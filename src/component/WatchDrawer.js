@@ -76,6 +76,7 @@ class WatchDrawer extends React.Component{
 				{
 					this.getMonetizationTypes().map((monetType,i) => (
 						<>
+                            <Divider />
 							<List key={i}>
 								<ListItem>
 									<ListItemText
@@ -83,6 +84,7 @@ class WatchDrawer extends React.Component{
                                         primary={<Typography variant='h5'>{monetType}</Typography>}
                                     />
 								</ListItem>
+    							<Divider />
 								{
 									this.state.jwResponse.items[0].offers
 									.filter(o => o.monetization_type == monetType)
@@ -95,7 +97,6 @@ class WatchDrawer extends React.Component{
 									))
 								}
 							</List>
-							<Divider />
 						</>
 					))
 				}
