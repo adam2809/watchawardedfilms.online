@@ -8,6 +8,7 @@ import {
 import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
 import WatchModal from './WatchModal'
+import WatchDrawer from './WatchDrawer'
 
 let festivals = []
 
@@ -25,7 +26,7 @@ class App extends React.Component{
             <Router>
                 <Switch>
                     <Route path="/test">
-                      <WatchModal/>
+                      <WatchDrawer/>
                     </Route>
                     <Route path="/festival/:festId">
                       <FestivalAwards getFestivals={this.getFestivals}/>

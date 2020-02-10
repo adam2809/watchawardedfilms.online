@@ -51,9 +51,9 @@ class FestivalAwards extends React.Component {
 							<Table aria-label={"Awards for "+this.props.getFestivals()[this.fId-1]}>
 								<TableHead>
 									<TableRow>
-										<TableCell>Title</TableCell>
-										<TableCell>Award</TableCell>
-										<TableCell>Year</TableCell>
+										<TableCell><b>Title</b></TableCell>
+										<TableCell><b>Award</b></TableCell>
+										<TableCell><b>Year</b></TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
