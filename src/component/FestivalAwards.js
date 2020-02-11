@@ -86,6 +86,7 @@ class FestivalAwards extends React.Component {
 					open={this.state.showDialog}
 					maxWidth={'md'}
 					onClose={() => this.setState({showDialog:false})}
+					movie={this.state.chosenMovie}
 				/>
 			</div>
 		)

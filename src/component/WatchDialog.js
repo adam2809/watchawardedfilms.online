@@ -10,10 +10,12 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 
 
 const styles = theme => ({
@@ -64,15 +66,26 @@ class WatchDialog extends React.Component{
 		return [...new Set(this.state.jwResponse.items[0].offers.map(o => o.monetization_type))]
 	}
 
-	getDomainFromUrl(url){
-		let tmp = ''
-		if(url.includes('www.')){
-			tmp=url.substring(url.indexOf('www.'))
-		}else{
-			tmp=url.substring(url.indexOf('https://'))
-		}
-		return tmp.substring(0,tmp.indexOf('/'))
+	displayOffer(offer){
+        const domainName = offer.urls.standard_web.split('/')[2]
+
+        console.log(offer.urls.standard_web)
+        console.log(offer)
+        let res = `${domainName}[${offer.presentation_type.toUpperCase()}]`
+
+        if(offer.monetization_type != 'flatrate'){
+            res = res.concat(` - ${offer.retail_price}£`)
+        }
+
+        return res
 	}
+
+    displayMonetizationType(mt){
+        if(mt in this.displayedMonetizationTypes){
+            return this.displayedMonetizationTypes[mt]
+        }
+        return mt[0].toUpperCase() + mt.substring(1)
+    }
 
 	render(){
 		const { classes } = this.props
@@ -83,38 +96,39 @@ class WatchDialog extends React.Component{
                     maxWidth={this.props.maxWidth}
                     onClose={this.props.onClose}
                 >
-                    <DialogTitle>Watch</DialogTitle>
+                    <DialogTitle>Watch {this.props.movie}</DialogTitle>
                     <DialogContent>
     				{
     					this.getMonetizationTypes().map((monetType,i) => (
     						<>
-                                <Box>
-                                    <Divider />
-        							<List key={i}>
-        								<ListItem>
-        									<ListItemText
-                                                disableTypography
-                                                primary={<Typography variant='h5'>{monetType}</Typography>}
-                                            />
-        								</ListItem>
-            							<Divider />
-        								{
-        									this.state.jwResponse.items[0].offers
-        									.filter(o => o.monetization_type == monetType)
-        									.map(o => (
-        										<ListItem button>
-        											<ListItemText
-        												primary={(o.urls.standard_web) + ' - ' + o.retail_price + '£'}
-        											/>
-        										</ListItem>
-        									))
-        								}
-        							</List>
-                                </Box>
+    							<List key={i}>
+    								<ListItem>
+    									<ListItemText
+                                            disableTypography
+                                            primary={<Typography variant='h5'>{this.displayMonetizationType(monetType)}</Typography>}
+                                        />
+    								</ListItem>
+    								{
+    									this.state.jwResponse.items[0].offers
+    									.filter(o => o.monetization_type == monetType)
+    									.map(o => (
+    										<ListItem button>
+    											<ListItemText
+    												primary={this.displayOffer(o)}
+    											/>
+    										</ListItem>
+    									))
+    								}
+    							</List>
     						</>
     					))
     				}
                     </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={this.props.onClose} color='primary'>
+                            Close
+                        </Button>
+                    </DialogActions>
                 </Dialog>
 			</div>
 		)
