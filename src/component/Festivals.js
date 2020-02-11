@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
+import SearchIcon from '@material-ui/icons/Search';
+
+
 
 import {
 	List,
@@ -19,7 +24,8 @@ export default class Festivals extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			showErrorAlert:true
+			showErrorAlert:true,
+			searchInput:''
 		}
 	}
 
@@ -33,9 +39,27 @@ export default class Festivals extends React.Component {
 				<Box width={300}>
 					<Paper>
 						<List>
-							{this.props.festivals.map((f,i) => {
+							<ListItem>
+								<TextField
+									label="Search festivals"
+									InputProps={{
+										startAdornment: (
+											<InputAdornment position="start">
+												<SearchIcon />
+											</InputAdornment>
+										),
+									}}
+									onChange={(e) => this.setState({searchInput:e.target.value})}
+								/>
+
+
+							</ListItem>
+							{this.props.festivals
+							 .filter((f) => f.toLowerCase().includes(this.state.searchInput.toLowerCase()))
+							 .map((f,i) => {
 								return (
 									<>
+									<Divider />
 										<ListItem
 											button
 											key={i}
@@ -44,7 +68,7 @@ export default class Festivals extends React.Component {
 										>
 											<ListItemText primary={f} align='center'/>
 										</ListItem>
-										{(i != this.props.festivals.length - 1) && <Divider/>}
+										{(i == this.props.festivals.length - 1) && <Divider/>}
 									</>
 								)
 							})}
