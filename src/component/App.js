@@ -13,13 +13,29 @@ import WatchDrawer from './WatchDrawer'
 let festivals = []
 
 class App extends React.Component{
-    setFestivals(f){
-        festivals = f
+    constructor(props){
+		super(props)
+		this.state = {festivals:[],
+                      isLoading:true,
+					  errorOcurred:false}
     }
 
-    getFestivals(){
-        return festivals
-    }
+	componentDidMount(){
+		fetch(process.env.REACT_APP_API_URL+"festivals")
+		.then(res => res.json())
+		.then(res => {
+			this.setState({
+				festivals: res.festivals,
+				isLoading: false,
+			})
+		})
+		.catch(err => {
+			this.setState({
+				errorOcurred: true,
+				isLoading: false
+			})
+		})
+	}
 
     render(){
         return (
@@ -29,10 +45,14 @@ class App extends React.Component{
                       <WatchDrawer/>
                     </Route>
                     <Route path="/festival/:festId">
-                      <FestivalAwards getFestivals={this.getFestivals}/>
+                      <FestivalAwards festivals={this.state.festivals}/>
                     </Route>
                     <Route path="/">
-                        <Festivals setFestivals={this.setFestivals}/>
+                        <Festivals
+                            isLoading={this.state.isLoading}
+                            festivals={this.state.festivals}
+                            errorOcurred={this.state.errorOcurred}
+                        />
                     </Route>
                 </Switch>
             </Router>

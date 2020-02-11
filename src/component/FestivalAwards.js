@@ -35,7 +35,7 @@ class FestivalAwards extends React.Component {
 	render(){
 		return(
 			<div align='center'>
-				<h1>This is the list of all awards for {this.props.getFestivals()[this.fId-1]}</h1>
+				<h1>This is the list of all awards for {this.props.festivals[this.fId-1]}</h1>
 				<Box width={600}>
 					<MaterialTable
 						columns={[
@@ -87,8 +87,6 @@ class FestivalAwards extends React.Component {
 				<Drawer anchor='top' open={this.state.showDrawer}>
 					<WatchDrawer/>
 				</Drawer>
-				{// TODO use dialogs instead of drawer or modal or maybe use modal https://material-ui.com/components/dialogs/
-				}
 			</div>
 		)
 	}

@@ -18,27 +18,9 @@ import {
 export default class Festivals extends React.Component {
 	constructor(props){
 		super(props)
-		this.state = {festivals:[],
-                      isLoading:true,
-					  errorOcurred:false}
-	}
-
-	componentDidMount(){
-		fetch(process.env.REACT_APP_API_URL+"festivals")
-		.then(res => res.json())
-		.then(res => {
-			this.props.setFestivals(res.festivals)
-			this.setState({
-				festivals: res.festivals,
-				isLoading: false,
-			})
-		})
-		.catch(err => {
-			this.setState({
-				errorOcurred: true,
-				isLoading: false
-			})
-		})
+		this.state = {
+			showErrorAlert:true
+		}
 	}
 
 	render(){
@@ -47,11 +29,11 @@ export default class Festivals extends React.Component {
 				<Typography variant="h2">
 					Available festivals:
 				</Typography>
-				{this.state.isLoading && <CircularProgress color='primary'></CircularProgress>}
+				{this.props.isLoading && <CircularProgress color='primary'></CircularProgress>}
 				<Box width={300}>
 					<Paper>
 						<List>
-							{this.state.festivals.map((f,i) => {
+							{this.props.festivals.map((f,i) => {
 								return (
 									<>
 										<ListItem
@@ -62,7 +44,7 @@ export default class Festivals extends React.Component {
 										>
 											<ListItemText primary={f} align='center'/>
 										</ListItem>
-										{(i != this.state.festivals.length - 1) && <Divider/>}
+										{(i != this.props.festivals.length - 1) && <Divider/>}
 									</>
 								)
 							})}
@@ -70,10 +52,10 @@ export default class Festivals extends React.Component {
 					</Paper>
 				</Box>
 				<Snackbar
-					open={this.state.errorOcurred}
-					onClose={() => this.setState({errorOcurred:false})}>
+					open={this.props.errorOcurred && this.state.showErrorAlert}
+					onClose={() => this.setState({showErrorAlert:false})}>
 					<Alert
-						onClose={() => this.setState({errorOcurred:false})}
+						onClose={() => this.setState({showErrorAlert:false})}
 						severity='error'>
 						Could not retrieve festivals list
 					</Alert>
