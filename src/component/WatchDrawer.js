@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 
 const styles = theme => ({
@@ -76,6 +77,7 @@ class WatchDrawer extends React.Component{
 				{
 					this.getMonetizationTypes().map((monetType,i) => (
 						<>
+                        <Box width={800} height={500}>
                             <Divider />
 							<List key={i}>
 								<ListItem>
@@ -97,6 +99,7 @@ class WatchDrawer extends React.Component{
 									))
 								}
 							</List>
+                        </Box>
 						</>
 					))
 				}

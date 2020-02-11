@@ -9,11 +9,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Drawer from '@material-ui/core/Drawer';
+
 import Alert from '@material-ui/lab/Alert';
 
 import MaterialTable from 'material-table'
+
+import WatchDrawer from './WatchDrawer'
 
 
 class FestivalAwards extends React.Component {
@@ -23,6 +27,7 @@ class FestivalAwards extends React.Component {
 		super()
 		this.state = {films:[],
                       showDrawer:false,
+                      chosenMovie:'',
 					  errorOcurred:false}
 	  	this.fId = props.match.params.festId
 	}
@@ -34,7 +39,7 @@ class FestivalAwards extends React.Component {
 				<Box width={600}>
 					<MaterialTable
 						columns={[
-							{title:'Title',field:'name'},
+							{title: 'Title',field:'name'},
 							{title:'Award',field:'award'},
 							{title:'Year',field:'year'},
 						]}
@@ -57,7 +62,10 @@ class FestivalAwards extends React.Component {
 							  icon: 'movie',
 							  tooltip: 'Show watch offers',
 							  onClick: (event, rowData) => {
-								  console.log(rowData)
+								  this.setState({
+									  chosenMovie:rowData.name,
+									  showDrawer:true
+								  })
 							  }
 							}
 						]}
@@ -76,6 +84,11 @@ class FestivalAwards extends React.Component {
 						Could not retrieve films list
 					</Alert>
 				</Snackbar>
+				<Drawer anchor='top' open={this.state.showDrawer}>
+					<WatchDrawer/>
+				</Drawer>
+				{// TODO use dialogs instead of drawer or modal or maybe use modal https://material-ui.com/components/dialogs/
+				}
 			</div>
 		)
 	}
