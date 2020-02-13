@@ -18,6 +18,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 
 const styles = theme => ({
   list: {
@@ -29,22 +32,23 @@ const styles = theme => ({
 })
 
 class WatchDialog extends React.Component{
-
-    displayedMonetizationTypes = {
-        'flatrate':'Streaming service'
-    }
-
 	constructor(props){
 		super(props)
 		this.state = {
 			isLoading: true,
 			errorOccurred: false,
+			showError: true,
 			jwResponse: {}
 		}
 	}
 
     makeJustwatchApiCall(){
-        console.log('calling')
+        this.setState({
+			isLoading: true,
+			errorOccurred: false,
+			showError: true,
+			jwResponse: {}
+		})
 
         const data = {
             query:this.props.movie
@@ -70,32 +74,6 @@ class WatchDialog extends React.Component{
 		})
     }
 
-	getMonetizationTypes(){
-		if(this.state.isLoading || this.state.errorOcurred){
-			return []
-		}
-        console.log(this.state.jwResponse.items[0])
-		return [...new Set(this.state.jwResponse.items[0].offers.map(o => o.monetization_type))]
-	}
-
-	displayOffer(offer){
-        const domainName = offer.urls.standard_web.split('/')[2]
-        let res = `${domainName}[${offer.presentation_type.toUpperCase()}]`
-
-        if(offer.monetization_type != 'flatrate'){
-            res = res.concat(` - ${offer.retail_price}£`)
-        }
-
-        return res
-	}
-
-    displayMonetizationType(mt){
-        if(mt in this.displayedMonetizationTypes){
-            return this.displayedMonetizationTypes[mt]
-        }
-        return mt[0].toUpperCase() + mt.substring(1)
-    }
-
     isResponseValid(){
         if(this.state.isLoading || this.state.errorOcurred){
             return false
@@ -106,7 +84,7 @@ class WatchDialog extends React.Component{
 	render(){
 		const { classes } = this.props
 		return (
-			<div>
+			<>
                 <Dialog
                     open={this.props.open}
                     maxWidth={this.props.maxWidth}
@@ -119,12 +97,8 @@ class WatchDialog extends React.Component{
                         {this.isResponseValid() && (
                             <WatchDialogContent
                             	jwResponse={this.state.jwResponse}
-                            	displayMonetizationType={() => this.displayMonetizationType()}
-                            	displayOffer={() => this.displayOffer()}
-                                getMonetizationTypes={() => this.getMonetizationTypes()}
                             />
                         )}
-
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={this.props.onClose} color='primary'>
@@ -132,20 +106,54 @@ class WatchDialog extends React.Component{
                         </Button>
                     </DialogActions>
                 </Dialog>
-			</div>
+				<Snackbar
+					open={!this.isResponseValid() && !this.state.isLoading && this.state.showError}
+					onClose={() => this.setState({showError:false})}>
+					<Alert
+						onClose={() => this.setState({showError:false})}
+						severity='error'>
+						{this.state.errorOcurred ? 'Could not retrieve links list' : `Could not find ${this.props.movie} on Justwatch`}
+					</Alert>
+				</Snackbar>
+			</>
 		)
 	}
 }
 
 function WatchDialogContent(props){
+    const displayedMonetizationTypes = {
+        'flatrate':'Streaming service'
+    }
+
+    const getMonetizationTypes = () => {
+        return [...new Set(props.jwResponse.items[0].offers.map(o => o.monetization_type))]
+    }
+
+    const displayOffer = (offer) => {
+        const domainName = offer.urls.standard_web.split('/')[2]
+        let res = `${domainName}[${offer.presentation_type.toUpperCase()}]`
+
+        if(offer.monetization_type != 'flatrate'){
+            res = res.concat(` - ${offer.retail_price}£`)
+        }
+
+        return res
+    }
+
+    const displayMonetizationType = (mt) => {
+        if(mt in displayedMonetizationTypes){
+            return displayedMonetizationTypes[mt]
+        }
+        return mt[0].toUpperCase() + mt.substring(1)
+    }
     return (
-            props.getMonetizationTypes().map((monetType,i) => (
+            getMonetizationTypes().map((monetType,i) => (
                 <>
                     <List key={i}>
                         <ListItem>
                             <ListItemText
                                 disableTypography
-                                primary={<Typography variant='h5'>{props.displayMonetizationType(monetType)}</Typography>}
+                                primary={<Typography variant='h5'>{displayMonetizationType(monetType)}</Typography>}
                             />
                         </ListItem>
                         {
@@ -154,7 +162,7 @@ function WatchDialogContent(props){
                             .map(o => (
                                 <ListItem button>
                                     <ListItemText
-                                        primary={props.displayOffer(o)}
+                                        primary={displayOffer(o)}
                                     />
                                 </ListItem>
                             ))
