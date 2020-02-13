@@ -42,8 +42,18 @@ class WatchDialog extends React.Component{
 		}
 	}
 
-	componentDidMount(){
-		fetch(process.env.REACT_APP_API_URL+'test')
+    makeJustwatchApiCall(){
+        console.log('calling')
+
+        const data = {
+            query:this.props.movie
+        }
+        const fetchOptions = {
+            method:'POST',
+            headers:{'User-Agent':'JustWatch Python client (github.com/dawoudt/JustWatchAPI)'},
+            body:JSON.stringify(data)
+        }
+		fetch(process.env.REACT_APP_JW_API_URL+'content/titles/en_GB/popular',fetchOptions)
 		.then(res => res.json())
 		.then(res => {
 			this.setState({
@@ -57,20 +67,18 @@ class WatchDialog extends React.Component{
 				errorOcurred:true
 			})
 		})
-	}
+    }
 
 	getMonetizationTypes(){
 		if(this.state.isLoading || this.state.errorOcurred){
 			return []
 		}
+        console.log(this.state.jwResponse.items[0])
 		return [...new Set(this.state.jwResponse.items[0].offers.map(o => o.monetization_type))]
 	}
 
 	displayOffer(offer){
         const domainName = offer.urls.standard_web.split('/')[2]
-
-        console.log(offer.urls.standard_web)
-        console.log(offer)
         let res = `${domainName}[${offer.presentation_type.toUpperCase()}]`
 
         if(offer.monetization_type != 'flatrate'){
@@ -95,6 +103,7 @@ class WatchDialog extends React.Component{
                     open={this.props.open}
                     maxWidth={this.props.maxWidth}
                     onClose={this.props.onClose}
+                    onEnter={() => this.makeJustwatchApiCall()}
                 >
                     <DialogTitle>Watch {this.props.movie}</DialogTitle>
                     <DialogContent>
