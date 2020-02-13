@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -95,6 +96,13 @@ class WatchDialog extends React.Component{
         return mt[0].toUpperCase() + mt.substring(1)
     }
 
+    isResponseValid(){
+        if(this.state.isLoading || this.state.errorOcurred){
+            return false
+        }
+        return this.state.jwResponse.items.length != 0 && 'offers' in this.state.jwResponse.items[0]
+    }
+
 	render(){
 		const { classes } = this.props
 		return (
@@ -107,31 +115,16 @@ class WatchDialog extends React.Component{
                 >
                     <DialogTitle>Watch {this.props.movie}</DialogTitle>
                     <DialogContent>
-    				{
-    					this.getMonetizationTypes().map((monetType,i) => (
-    						<>
-    							<List key={i}>
-    								<ListItem>
-    									<ListItemText
-                                            disableTypography
-                                            primary={<Typography variant='h5'>{this.displayMonetizationType(monetType)}</Typography>}
-                                        />
-    								</ListItem>
-    								{
-    									this.state.jwResponse.items[0].offers
-    									.filter(o => o.monetization_type == monetType)
-    									.map(o => (
-    										<ListItem button>
-    											<ListItemText
-    												primary={this.displayOffer(o)}
-    											/>
-    										</ListItem>
-    									))
-    								}
-    							</List>
-    						</>
-    					))
-    				}
+                        {this.state.isLoading && <div align='center'><CircularProgress/></div>}
+                        {this.isResponseValid() && (
+                            <WatchDialogContent
+                            	jwResponse={this.state.jwResponse}
+                            	displayMonetizationType={() => this.displayMonetizationType()}
+                            	displayOffer={() => this.displayOffer()}
+                                getMonetizationTypes={() => this.getMonetizationTypes()}
+                            />
+                        )}
+
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={this.props.onClose} color='primary'>
@@ -142,6 +135,34 @@ class WatchDialog extends React.Component{
 			</div>
 		)
 	}
+}
+
+function WatchDialogContent(props){
+    return (
+            props.getMonetizationTypes().map((monetType,i) => (
+                <>
+                    <List key={i}>
+                        <ListItem>
+                            <ListItemText
+                                disableTypography
+                                primary={<Typography variant='h5'>{props.displayMonetizationType(monetType)}</Typography>}
+                            />
+                        </ListItem>
+                        {
+                            props.jwResponse.items[0].offers
+                            .filter(o => o.monetization_type == monetType)
+                            .map(o => (
+                                <ListItem button>
+                                    <ListItemText
+                                        primary={props.displayOffer(o)}
+                                    />
+                                </ListItem>
+                            ))
+                        }
+                    </List>
+                </>
+        )
+    ))
 }
 
 WatchDialog.propTypes = {
