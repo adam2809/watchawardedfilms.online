@@ -160,7 +160,7 @@ function WatchDialogContent(props){
                             props.jwResponse.items[0].offers
                             .filter(o => o.monetization_type == monetType)
                             .map(o => (
-                                <ListItem button>
+                                <ListItem button component="a" target="_blank" rel="noopener noreferrer" href={o.urls.standard_web}>
                                     <ListItemText
                                         primary={displayOffer(o)}
                                     />
