@@ -147,7 +147,9 @@ function WatchDialogContent(props){
         return mt[0].toUpperCase() + mt.substring(1)
     }
     return (
-            getMonetizationTypes().map((monetType,i) => (
+            getMonetizationTypes()
+            .filter(mt => mt != 'cinema')
+            .map((monetType,i) => (
                 <>
                     <List key={i}>
                         <ListItem>
