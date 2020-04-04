@@ -51,14 +51,14 @@ class App extends React.Component{
                     <Typography variant="h6">
                         watchawardedfilms.online
                     </Typography>
-                    <Button color="inherit">Festivals</Button>
-                    <Button color="inherit">About</Button>
+                    <Button color="inherit" href='/'>Festivals</Button>
+                    <Button color="inherit" href='/about'>About</Button>
                 </Toolbar>
             </AppBar>
             <Router>
                 <Switch>
-                    <Route path="/test">
-                      <WatchDialog />
+                    <Route path="/about">
+                      <About />
                     </Route>
                     <Route path="/festival/:festId">
                       <FestivalAwards festivals={this.state.festivals}/>
