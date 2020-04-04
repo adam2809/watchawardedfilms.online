@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
+import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -33,7 +34,7 @@ class FestivalAwards extends React.Component {
 	render(){
 		return(
 			<div align='center'>
-				<h1>This is the list of all awards for {this.props.festivals[this.fId-1]}</h1>
+				<Typography variant='h4' style={{paddingTop:25,paddingBottom:25}}>{this.props.festivals[this.fId-1]}</Typography>
 				<Box width={600}>
 					<MaterialTable
 						columns={[

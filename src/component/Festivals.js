@@ -31,10 +31,7 @@ export default class Festivals extends React.Component {
 
 	render(){
 		return(
-			<div align='center'>
-				<Typography variant="h2">
-					Available festivals:
-				</Typography>
+			<div align='center' style={{paddingTop:50}}>
 				{this.props.isLoading && <CircularProgress color='primary'></CircularProgress>}
 				<Box width={300}>
 					<Paper>
