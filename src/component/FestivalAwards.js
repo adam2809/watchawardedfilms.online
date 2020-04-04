@@ -62,7 +62,7 @@ class FestivalAwards extends React.Component {
 							  tooltip: 'Show watch offers',
 							  onClick: (event, rowData) => {
 								  this.setState({
-									  chosenMovie:rowData.name,
+									  chosenMovie:rowData,
 									  showDialog:true
 								  })
 							  }

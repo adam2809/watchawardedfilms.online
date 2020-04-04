@@ -51,7 +51,7 @@ class WatchDialog extends React.Component{
 		})
 
         const data = {
-            query:this.props.movie
+            query:this.props.movie.name
         }
         const fetchOptions = {
             method:'POST',
@@ -78,6 +78,9 @@ class WatchDialog extends React.Component{
         if(this.state.isLoading || this.state.errorOcurred){
             return false
         }
+        if(this.state.jwResponse.items[0].original_release_year != this.props.movie.year){
+            return false
+        }
         return this.state.jwResponse.items.length != 0 && 'offers' in this.state.jwResponse.items[0]
     }
 
@@ -91,7 +94,7 @@ class WatchDialog extends React.Component{
                     onClose={this.props.onClose}
                     onEnter={() => this.makeJustwatchApiCall()}
                 >
-                    <DialogTitle>Watch {this.props.movie}</DialogTitle>
+                    <DialogTitle>Watch {this.props.movie.name}</DialogTitle>
                     <DialogContent>
                         {this.state.isLoading && <div align='center'><CircularProgress/></div>}
                         {this.isResponseValid() && (
@@ -112,7 +115,7 @@ class WatchDialog extends React.Component{
 					<Alert
 						onClose={() => this.setState({showError:false})}
 						severity='error'>
-						{this.state.errorOcurred ? 'Could not retrieve links list' : `Could not find ${this.props.movie} on Justwatch`}
+						{this.state.errorOcurred ? 'Could not retrieve links list' : `Could not find ${this.props.movie.name} on Justwatch`}
 					</Alert>
 				</Snackbar>
 			</>
