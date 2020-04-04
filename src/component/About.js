@@ -13,7 +13,7 @@ export default function About(props){
                     ['Author','Adam Kulesza'],
                     ['Projects github','https://github.com/adam2809/watchawardedfilms.online'],
                     ['Authors github','https://github.com/adam2809'],
-                    ['Contact emial','adam.kule@gmail.com']
+                    ['Contact email','adam.kule@gmail.com']
                 ].map((pair) => (
                     <>
                     <AboutCardRow title={pair[0]} content={pair[1]}/>

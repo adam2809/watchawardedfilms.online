@@ -40,7 +40,7 @@ class FestivalAwards extends React.Component {
 						columns={[
 							{title: 'Title',field:'name'},
 							{title:'Award',field:'award'},
-							{title:'Year',field:'year'},
+							{title:'Year',field:'year',defaultSort:'desc'},
 						]}
 						data={query => new Promise((resolve,reject) => {
 							fetch(process.env.REACT_APP_API_URL+"festival/"+this.fId)
