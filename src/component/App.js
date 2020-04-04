@@ -8,6 +8,7 @@ import {
 import Festivals from './Festivals'
 import FestivalAwards from './FestivalAwards'
 import WatchDialog from './WatchDialog'
+import About from './About'
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
