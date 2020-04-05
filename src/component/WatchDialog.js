@@ -60,6 +60,13 @@ class WatchDialog extends React.Component{
         }
 		fetch(process.env.REACT_APP_JW_API_URL+'content/titles/en_GB/popular',fetchOptions)
 		.then(res => res.json())
+        .then(res => {
+            res.items = res.items
+                           .slice(0,10)
+                           .filter(i => Math.abs(i.original_release_year - this.props.movie.year) <= 1)
+            console.log(res)
+            return res
+        })
 		.then(res => {
 			this.setState({
 				isLoading:false,
@@ -78,7 +85,8 @@ class WatchDialog extends React.Component{
         if(this.state.isLoading || this.state.errorOcurred){
             return false
         }
-        if(this.state.jwResponse.items[0].original_release_year != this.props.movie.year){
+
+        if(Math.abs(this.state.jwResponse.items[0].original_release_year - this.props.movie.year) > 1){
             return false
         }
         return this.state.jwResponse.items.length != 0 && 'offers' in this.state.jwResponse.items[0]
