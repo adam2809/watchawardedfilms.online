@@ -61,10 +61,14 @@ class WatchDialog extends React.Component{
 		fetch(process.env.REACT_APP_JW_API_URL+'content/titles/en_GB/popular',fetchOptions)
 		.then(res => res.json())
         .then(res => {
+            console.log('Untouched JW response')
+            console.log(res)
             res.items = res.items
                            .slice(0,10)
                            .filter(i => Math.abs(i.original_release_year - this.props.movie.year) <= 1)
+            console.log('Prepped JW response')
             console.log(res)
+
             return res
         })
 		.then(res => {
@@ -82,14 +86,10 @@ class WatchDialog extends React.Component{
     }
 
     isResponseValid(){
-        if(this.state.isLoading || this.state.errorOcurred){
-            return false
-        }
-
-        if(Math.abs(this.state.jwResponse.items[0].original_release_year - this.props.movie.year) > 1){
-            return false
-        }
-        return this.state.jwResponse.items.length != 0 && 'offers' in this.state.jwResponse.items[0]
+        return !this.state.isLoading &&
+            !this.state.errorOcurred &&
+            this.state.jwResponse.items.length != 0 &&
+            'offers' in this.state.jwResponse.items[0]
     }
 
 	render(){
