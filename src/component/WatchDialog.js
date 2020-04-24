@@ -89,7 +89,8 @@ class WatchDialog extends React.Component{
         return !this.state.isLoading &&
             !this.state.errorOcurred &&
             this.state.jwResponse.items.length != 0 &&
-            'offers' in this.state.jwResponse.items[0]
+            'offers' in this.state.jwResponse.items[0] &&
+            !this.state.jwResponse.items[0].offers.every(o => o.monetization_type == 'cinema')
     }
 
 	render(){
