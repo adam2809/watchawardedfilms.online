@@ -138,7 +138,7 @@ function WatchDialogContent(props){
     }
 
     const getMonetizationTypes = () => {
-        return [...new Set(props.jwResponse.items[0].offers.map(o => o.monetization_type))]
+        return Array.from([...new Set(props.jwResponse.items[0].offers.map(o => o.monetization_type))])
     }
 
     const displayOffer = (offer) => {
@@ -158,9 +158,44 @@ function WatchDialogContent(props){
         }
         return mt[0].toUpperCase() + mt.substring(1)
     }
+
+    const monetTypeSort = function(a,b){
+        if(a == undefined || b == undefined){
+            return 0
+        }
+        if(a == 'free'){
+            return -1
+        }
+        if(b == 'free'){
+            return 1
+        }
+
+        if(a == 'flatrate'){
+            return -1
+        }
+        if(b == 'flatrate'){
+            return 1
+        }
+
+        if(a == 'rent'){
+            return -1
+        }
+        if(b == 'rent'){
+            return 1
+        }
+
+        if(a == 'buy'){
+            return -1
+        }
+        if(b == 'buy'){
+            return 1
+        }
+    }
+
     return (
             getMonetizationTypes()
             .filter(mt => mt != 'cinema')
+            .sort(monetTypeSort)
             .map((monetType,i) => (
                 <>
                     <List key={i}>
@@ -173,8 +208,8 @@ function WatchDialogContent(props){
                         {
                             props.jwResponse.items[0].offers
                             .filter(o => o.monetization_type == monetType)
-                            .map(o => (
-                                <ListItem button component="a" target="_blank" rel="noopener noreferrer" href={o.urls.standard_web}>
+                            .map((o,i) => (
+                                <ListItem button component="a" target="_blank" rel="noopener noreferrer" href={o.urls.standard_web} key={i}>
                                     <ListItemText
                                         primary={displayOffer(o)}
                                     />
