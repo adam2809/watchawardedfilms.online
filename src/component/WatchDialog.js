@@ -163,33 +163,17 @@ function WatchDialogContent(props){
         if(a == undefined || b == undefined){
             return 0
         }
-        if(a == 'free'){
-            return -1
+        const priorityList = ['free','flatrate','rent','buy']
+        var i
+        for (i=0;i<priorityList.length;i++){
+            if(a == priorityList[i]){
+                return -1
+            }
+            if(b == priorityList[i]){
+                return 1
+            }
         }
-        if(b == 'free'){
-            return 1
-        }
-
-        if(a == 'flatrate'){
-            return -1
-        }
-        if(b == 'flatrate'){
-            return 1
-        }
-
-        if(a == 'rent'){
-            return -1
-        }
-        if(b == 'rent'){
-            return 1
-        }
-
-        if(a == 'buy'){
-            return -1
-        }
-        if(b == 'buy'){
-            return 1
-        }
+        return 0
     }
 
     return (
