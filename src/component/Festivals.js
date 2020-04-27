@@ -56,16 +56,16 @@ export default class Festivals extends React.Component {
 							 .map((f,i) => {
 								return (
 									<>
-									<Divider />
-										<ListItem
-											button
-											key={i}
-											component={Link}
-											to={"/festival/"+(i+1).toString()}
-										>
-											<ListItemText primary={f} align='center'/>
-										</ListItem>
-										{(i == this.props.festivals.length - 1) && <Divider/>}
+									<Divider key={i*2}/>
+									<ListItem
+										button
+										component={Link}
+										to={"/festival/"+(i+1).toString()}
+										key={i*2+1}
+									>
+										<ListItemText primary={f} align='center'/>
+									</ListItem>
+									{(i == this.props.festivals.length - 1) && <Divider key={i+10}/>}
 									</>
 								)
 							})}
