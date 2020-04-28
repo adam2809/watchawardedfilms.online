@@ -57,14 +57,14 @@ class App extends React.Component{
         fetch(ipInfoUrl,{method:'GET'})
         .then(ipInfo => ipInfo.json())
         .then(ipInfo => {
-            return fetch(jwLocalesUrl,{method:'GET',headers:jwHeaders})
-                            .then(locales => locales.json())
-                            .then(locales => {
-                                const loc = locales.find(loc => loc['iso_3166_2'] == ipInfo['countryCode'])
-                                if(loc !== undefined){
-                                    this.setState({locale:loc['full_locale']})
-                                }
-                            })
+            fetch(jwLocalesUrl,{method:'GET',headers:jwHeaders})
+            .then(locales => locales.json())
+            .then(locales => {
+                const loc = locales.find(loc => loc['iso_3166_2'] == ipInfo['countryCode'])
+                if(loc !== undefined){
+                    this.setState({locale:loc['full_locale']})
+                }
+            })
         })
     }
 
@@ -86,7 +86,7 @@ class App extends React.Component{
                       <About />
                     </Route>
                     <Route path="/festival/:festId">
-                      <FestivalAwards festivals={this.state.festivals}/>
+                      <FestivalAwards festivals={this.state.festivals} locale={this.state.locale}/>
                     </Route>
                     <Route path="/">
                         <Festivals

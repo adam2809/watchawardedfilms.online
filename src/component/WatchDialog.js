@@ -61,7 +61,7 @@ class WatchDialog extends React.Component{
             headers:{'User-Agent':'JustWatch Python client (github.com/dawoudt/JustWatchAPI)'},
             body:JSON.stringify(data)
         }
-		fetch(process.env.REACT_APP_JW_API_URL+'content/titles/en_GB/popular',fetchOptions)
+		fetch(process.env.REACT_APP_JW_API_URL+`content/titles/${this.props.locale}/popular`,fetchOptions)
 		.then(res => res.json())
         .then(res => {
             console.log('Untouched JW response')
