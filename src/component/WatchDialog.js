@@ -31,7 +31,10 @@ const styles = theme => ({
   }
 })
 
+const gpm = require('../gestalt-pattern-matcher')
+
 class WatchDialog extends React.Component{
+
 	constructor(props){
 		super(props)
 		this.state = {
@@ -90,7 +93,14 @@ class WatchDialog extends React.Component{
             !this.state.errorOcurred &&
             this.state.jwResponse.items.length != 0 &&
             'offers' in this.state.jwResponse.items[0] &&
-            !this.state.jwResponse.items[0].offers.every(o => o.monetization_type == 'cinema')
+            !this.state.jwResponse.items[0].offers.every(o => o.monetization_type == 'cinema') &&
+            [1].filter(x => {
+                console.log(`The gpm score for ${this.state.jwResponse.items[0].title} and ${this.props.movie.name} is ${gpm(this.state.jwResponse.items[0].title,this.props.movie.name)}`)
+                return 1
+            }) &&
+            gpm(this.state.jwResponse.items[0].title,this.props.movie.name) > 0.5
+
+
     }
 
 	render(){
