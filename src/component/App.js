@@ -24,7 +24,9 @@ class App extends React.Component{
 		super(props)
 		this.state = {festivals:[],
                       isLoading:true,
-					  errorOcurred:false}
+					  errorOcurred:false,
+                      locale:'en_GB'
+                     }
     }
 
 	componentDidMount(){
@@ -42,7 +44,29 @@ class App extends React.Component{
 				isLoading: false
 			})
 		})
+
+        this.getLocale()
 	}
+
+    getLocale(){
+        const ipInfoUrl = 'http://ip-api.com/json'
+        const jwLocalesUrl = process.env.REACT_APP_JW_API_URL + 'content/locales/state'
+        const jwHeaders = {'User-Agent':'JustWatch Python client (github.com/dawoudt/JustWatchAPI)'}
+
+
+        fetch(ipInfoUrl,{method:'GET'})
+        .then(ipInfo => ipInfo.json())
+        .then(ipInfo => {
+            return fetch(jwLocalesUrl,{method:'GET',headers:jwHeaders})
+                            .then(locales => locales.json())
+                            .then(locales => {
+                                const loc = locales.find(loc => loc['iso_3166_2'] == ipInfo['countryCode'])
+                                if(loc !== undefined){
+                                    this.setState({locale:loc['full_locale']})
+                                }
+                            })
+        })
+    }
 
     render(){
         return (
