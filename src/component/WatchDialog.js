@@ -22,6 +22,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
 
+var StatsD = require('node-dogstatsd').StatsD;
+var statsd = new StatsD();
+
 const styles = theme => ({
   list: {
     width: 250,
@@ -64,13 +67,9 @@ class WatchDialog extends React.Component{
 		fetch(process.env.REACT_APP_JW_API_URL+'content/titles/en_GB/popular',fetchOptions)
 		.then(res => res.json())
         .then(res => {
-            console.log('Untouched JW response')
-            console.log(res)
             res.items = res.items
                            .slice(0,10)
                            .filter(i => Math.abs(i.original_release_year - this.props.movie.year) <= 1)
-            console.log('Prepped JW response')
-            console.log(res)
 
             return res
         })
@@ -79,7 +78,17 @@ class WatchDialog extends React.Component{
 				isLoading:false,
 				jwResponse:res
 			})
+            return res
 		})
+        .then(res => {
+            if(!(this.state.isLoading || this.state.errorOcurred)){
+                if(this.isResponseValid()){
+                    fetch(process.env.REACT_APP_API_URL+"metrics/jw_query/hit")
+                }else{
+                    fetch(process.env.REACT_APP_API_URL+"metrics/jw_query/miss")
+                }
+            }
+        })
 		.catch(err => {
 			this.setState({
 				isLoading:false,
@@ -90,17 +99,11 @@ class WatchDialog extends React.Component{
 
     isResponseValid(){
         return !this.state.isLoading &&
-            !this.state.errorOcurred &&
-            this.state.jwResponse.items.length != 0 &&
-            'offers' in this.state.jwResponse.items[0] &&
-            !this.state.jwResponse.items[0].offers.every(o => o.monetization_type == 'cinema') &&
-            [1].filter(x => {
-                console.log(`The gpm score for ${this.state.jwResponse.items[0].title} and ${this.props.movie.name} is ${gpm(this.state.jwResponse.items[0].title,this.props.movie.name)}`)
-                return 1
-            }) &&
-            gpm(this.state.jwResponse.items[0].title,this.props.movie.name) > 0.5
-
-
+               !this.state.errorOcurred &&
+               this.state.jwResponse.items.length != 0 &&
+               'offers' in this.state.jwResponse.items[0] &&
+               !this.state.jwResponse.items[0].offers.every(o => o.monetization_type == 'cinema') &&
+               gpm(this.state.jwResponse.items[0].title,this.props.movie.name) > 0.5
     }
 
 	render(){
